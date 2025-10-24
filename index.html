@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Neurosense | Mindwave S.A. de C.V.</title>
+  <style>
+    /* =========================
+       THEME TOKENS
+    ==========================*/
+    :root{
+      --bg: #0a0b0f;
+      --bg-2: #0f1320;
+      --text: #e8ecf1;
+      --muted: #a8b3c7;
+      --brand: #88e0d9;   /* acento principal */
+      --brand-2:#a58af9;  /* acento secundario */
+      --card: rgba(255,255,255,.06);
+      --stroke: rgba(255,255,255,.12);
+      --radius: 18px;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --h1: clamp(2.8rem, 6vw, 5.2rem);
+      --h2: clamp(2rem, 3.8vw, 2.6rem);
+      --h3: clamp(1.15rem, 2.2vw, 1.5rem);
+      --body: clamp(.98rem, 1.6vw, 1.06rem);
+      --glass: blur(14px) saturate(1.2);
+      --grad-hero: radial-gradient(80% 60% at 20% 10%, rgba(98, 54, 230, 0.811), transparent 60%),
+                   radial-gradient(70% 50% at 80% 20%, rgba(166, 138, 249, 0.601), transparent 60%),
+                   radial-gradient(90% 70% at 50% 100%, rgba(255,255,255,.05), transparent 60%);
+    }
+    /* Tema claro opcional */
+    html[data-theme="light"]{
+      --bg:#f7fafc; --bg-2:#ffffff; --text:#0f1222; --muted:#606a7b;
+      --card: rgba(255,255,255,.9); --stroke:#e8edf3; --shadow:0 10px 30px rgba(16,18,34,.08);
+      --grad-hero: radial-gradient(80% 60% at 20% 10%, rgba(136, 136, 224, 0.35), transparent 60%),
+                   radial-gradient(70% 50% at 80% 20%, rgba(165,138,249,.35), transparent 60%),
+                   radial-gradient(90% 70% at 50% 100%, rgba(16,18,34,.06), transparent 60%);
+    }
+
+    /* =========================
+       BASE
+    ==========================*/
+    *,*::before,*::after{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; scroll-padding-top:84px; }
+    body{
+      margin:0; color:var(--text); background:var(--bg);
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      font-size:var(--body); line-height:1.65;
+      min-height:100dvh; overflow-x:hidden;
+      background-image: var(--grad-hero);
+      background-attachment: fixed;
+    }
+    a{ color:inherit; }
+
+    /* =========================
+       HEADER (Glass)
+    ==========================*/
+    /* ===== MENÚ GLASS ===== */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 0;
+      background: transparent;
+    }
+
+    /* Contenedor del menú */
+    .glass-nav {
+      display: flex;
+      gap: 40px;
+      padding: 10px 40px;
+      border-radius: 50px;
+      background: rgba(255, 255, 255, 0.6);  /* Blanco translúcido */
+      backdrop-filter: blur(12px) saturate(1.5);
+      -webkit-backdrop-filter: blur(12px) saturate(1.5);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Enlaces */
+    .glass-nav a {
+      text-decoration: none;
+      color: #111;
+      font-weight: 700;
+      transition: color 0.3s ease;
+    }
+
+
+
+    /* Fondo oscuro: el menú se vuelve más claro */
+    body[data-theme="dark"] .glass-nav {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
+    body[data-theme="dark"] .glass-nav a {
+      color: #f1f1f1;
+    }
+
+    body[data-theme="dark"] .glass-nav a:hover {
+      color: #88a5e0;
+    }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+      .glass-nav {
+        flex-wrap: wrap;
+        gap: 20px;
+        padding: 12px 24px;
+      }
+    }
+
+
+    
+    /* =========================
+       LAYOUT
+    ==========================*/
+    .section{ padding: clamp(64px, 8vw, 110px) 16px; }
+    .container{ max-width:1100px; margin:0 auto; }
+    .title{ font-size:var(--h2); margin:0 0 10px; }
+    .display{ font-family: "Georgia", serif; font-size:var(--h1); letter-spacing:.02em; }
+    .lead{ color:var(--muted); margin:10px 0 26px; }
+
+    /* =========================
+       HERO
+    ==========================*/
+    .hero{
+      min-height: 82dvh; display:grid; place-items:center; text-align:center; position:relative;
+      isolation:isolate;
+    }
+    .orb{
+      position:absolute; inset:auto auto 10% -10%;
+      width:420px; height:420px; filter: blur(80px); opacity:.35; z-index:-1;
+      background: conic-gradient(from 90deg, var(--brand), transparent, var(--brand-2));
+      border-radius:50%;
+    }
+    .kicker{ color:var(--muted); font-weight:700; letter-spacing:.2em; text-transform:uppercase; font-size:.78rem; }
+
+    /* =========================
+       CARDS / BLOCKS
+    ==========================*/
+    .grid{ display:grid; gap:18px; grid-template-columns: repeat(12, minmax(0,1fr)); }
+    .card{
+      grid-column: span 12; background:var(--card); border:1px solid var(--stroke); border-radius:var(--radius);
+      box-shadow: var(--shadow); padding:20px;
+    }
+    .three .card{ grid-column: span 4; }
+    .four .card{ grid-column: span 3; }
+    .split{ display:grid; grid-template-columns:1.1fr .9fr; gap:22px; align-items:center; }
+    .chip{ display:inline-flex; align-items:center; gap:10px; padding:8px 12px; border-radius:999px;
+           border:1px solid var(--stroke); background:var(--card); color:var(--muted); font-weight:700; }
+
+    .logo-wrap{
+      display: flex;
+      align-items: center;
+      gap: 50px; 
+    }
+    .logo img {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      border-radius: 6px;
+      background: transparent;
+    }
+    .logo{
+      width:80px; height:80px; border-radius:18px; border:1px solid var(--stroke);
+      background: linear-gradient(180deg, color-mix(in oklab, var(--brand) 30%, transparent), transparent);
+      display:grid; place-items:center; font-weight:900; color:var(--text);
+    }
+    .id-name{ font-size: clamp(1.6rem, 3vw, 2.2rem); margin:0; }
+
+    .values .card h4{ margin:0 0 6px; font-size:var(--h3); }
+    .values .card p{ margin:0; color:var(--muted); }
+
+    /* Organigrama en mosaico */
+    .org .role{
+      background:var(--card); border:1px solid var(--stroke); border-radius:16px; padding:14px; text-align:center; box-shadow:var(--shadow);
+    }
+    .role .t{ display:block; font-weight:800; }
+    .role .p{ display:block; color:var(--muted); margin-top:4px; }
+
+    /* Lista rayada */
+    .lined{ border-top:1px solid var(--stroke); }
+    .lined .row{
+      display:flex; gap:14px; padding:16px 0; border-bottom:1px solid var(--stroke);
+      align-items:flex-start;
+    }
+    .lined .num{ min-width:2.6rem; color:var(--muted); font-weight:900; }
+
+    /* Contactos */
+    .center{ text-align:center; }
+    .pills{ display:flex; gap:12px; flex-wrap:wrap; justify-content:center; }
+    .pill{ padding:10px 14px; border-radius:999px; border:1px solid var(--stroke); background:var(--card); text-decoration:none; }
+
+    /* =========================
+       RESPONSIVE
+    ==========================*/
+    @media (max-width: 1000px){
+      .three .card{ grid-column: span 6; }
+      .four .card{ grid-column: span 6; }
+      .split{ grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px){
+      .three .card, .four .card{ grid-column: 1 / -1; }
+      .menu{ position:fixed; inset:64px 12px auto 12px; display:none; flex-direction:column; gap:10px; padding:12px; border-radius:16px; background:var(--bg-2); border:1px solid var(--stroke); box-shadow:var(--shadow); }
+      .menu.open{ display:flex; }
+      .burger{ display:block; }
+    }
+
+      /* ====== OVERRIDE: convertir .menu en barra GLASS ====== */
+      .header .nav{ justify-content: center; }
+
+      /* Oculta marca/burger si quieres solo la pastilla centrada */
+      .header .brand,
+      .header .burger,
+      .header .menu .cta { display: none; }
+
+      /* Pastilla glass centrada */
+      .header .menu{
+        position: static !important;   /* anula el menú móvil anterior */
+        inset: auto !important;        /* quita posiciones fijas previas */
+        display: flex;
+        gap: 40px;
+        padding: 10px 40px;
+        border-radius: 50px;
+        background: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(12px) saturate(1.5);
+        -webkit-backdrop-filter: blur(12px) saturate(1.5);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        box-shadow: 0 4px 25px rgba(0,0,0,0.05);
+      }
+
+      /* Enlaces sin subrayado y en negrita */
+      .header .menu a:link,
+      .header .menu a:visited{
+        text-decoration: none;
+        color: #111;
+        font-weight: 700;
+      }
+      .header .menu a:hover{ color:#4f4b61; }
+
+      /* Tema oscuro / fondos de color */
+      html[data-theme="dark"] .header .menu{
+        background: rgba(255,255,255,0.15);
+        border: 1px solid rgba(255,255,255,0.25);
+      }
+      html[data-theme="dark"] .header .menu a{ color:#f1f1f1; }
+      html[data-theme="dark"] .header .menu a:hover{ color:#88e0d9; }
+
+      /* Responsive: que envuelva bonito en móvil */
+      @media (max-width: 700px){
+        .header .menu{ flex-wrap: wrap; gap: 20px; padding: 12px 24px; }
+      }
+      /* === HERO estilo Oura === */
+      .hero-oura {
+        position: relative;
+        min-height: 100vh; /* ahora ocupa toda la pantalla hasta arriba */
+        display: grid;
+        place-items: center;
+        color: #fff;
+        margin-top: -120px; /* empuja hacia arriba para cubrir bajo el menú */
+        padding-top: 80px; /* evita que el texto quede debajo del menú */
+        background:
+          radial-gradient(50% 60% at 20% 20%, rgba(255,255,255,0.25) 0%, rgba(255, 255, 255, 0.096) 60%),
+          linear-gradient(180deg, #bba6df 0%, #a18ed9 40%, #9e8fe6 100%);
+        overflow: hidden;
+        z-index: 1;
+      }
+      .hero-oura::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(60% 35% at 50% 0%, rgba(255,255,255,0.45), rgba(255,255,255,0) 60%),
+          radial-gradient(50% 40% at 50% 100%, rgba(0,0,0,0.15), rgba(0,0,0,0) 60%);
+        pointer-events: none;
+        z-index: 0;
+      }
+      .hero-wrap{
+        width:100%;
+        max-width:1200px;
+        margin:0 auto;
+        padding: clamp(28px, 4vw, 52px) 16px;
+        display:grid;
+        grid-template-columns: 1.1fr .9fr;
+        gap: clamp(18px, 3vw, 36px);
+        align-items:center;
+      }
+
+      .hero-title{
+        font-family: "Georgia", serif;
+        font-size: clamp(2.2rem, 5.4vw, 4rem);
+        line-height: 1.05;
+        letter-spacing:.01em;
+        margin:0 0 10px;
+        text-wrap: balance;
+      }
+
+      .hero-sub{
+        font-size: clamp(1rem, 1.6vw, 1.15rem);
+        opacity:.95;
+        max-width: 48ch;
+        margin:0 0 22px;
+      }
+
+      /* Botón gradiente */
+      .btn-cta{
+        display:inline-block;
+        padding: 12px 22px;
+        border-radius: 999px;
+        text-decoration:none;
+        font-weight: 800;
+        letter-spacing:.02em;
+        color:#0f172a;
+        background: linear-gradient(135deg, #55b7ff 0%, #7c8eff 40%, #9a66ff 100%);
+        box-shadow: 0 8px 24px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.45);
+        transition: transform .15s ease, filter .15s ease;
+      }
+      .btn-cta:hover{ transform: translateY(-1px); filter: brightness(1.06); }
+
+      /* Imagen del producto */
+      .hero-media{ margin:0; }
+      .hero-product{
+        width:100%;
+        max-width: 620px;
+        height:auto;
+        display:block;
+        filter: drop-shadow(0 24px 40px rgba(0,0,0,.25));
+        border-radius: 24px; /* por si usas PNG con fondo */
+      }
+
+      /* Responsivo */
+      @media (max-width: 1000px){
+        .hero-wrap{ grid-template-columns: 1fr; text-align:left; }
+        .hero-media{ order: -1; }          /* imagen arriba en tablet si prefieres: quítalo si no */
+        .hero-oura{ min-height: 80svh; }
+      }
+      @media (max-width: 560px){
+        .hero-title{ font-size: clamp(1.9rem, 8vw, 2.6rem); }
+        .hero-product{ max-width: 440px; margin-inline:auto; }
+      }
+
+      /* Si usas tema oscuro global, mantiene legibilidad */
+      html[data-theme="dark"] .hero-oura{
+        background:
+          radial-gradient(50% 60% at 20% 20%, rgba(255,255,255,.14) 0%, rgba(255,255,255,0) 60%),
+          linear-gradient(180deg, #463155 0%, #634286 40%, #5b458a 100%);
+      }
+
+      .sin-fondo {
+        mix-blend-mode: multiply; /* o try: screen, darken, lighten */
+        background: transparent;
+      }
+
+      /* === VALORES HORIZONTAL CON GLASS === */
+      #valores {
+        position: relative;
+        padding: clamp(80px, 8vw, 100px) 20px;
+        color: #fff;
+        border-radius: 1%;
+        background: linear-gradient(180deg, #6a4fd481 0%, #32265643 50%);
+        overflow: hidden;
+      }
+
+      /* Efecto luz de fondo */
+      #valores::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(80% 60% at 50% -10%, rgba(255,255,255,.12), transparent 60%),
+          radial-gradient(60% 50% at 50% 110%, rgba(0,0,0,.45), transparent 60%);
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* Contenedor general: imagen + texto a los lados */
+      .valores-container {
+        display: grid;
+        grid-template-columns: 1.1fr 1fr;
+        gap: 40px;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* Imagen lateral */
+      .valores-img {
+        position: relative;
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        max-height: 520px;
+      }
+      .valores-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: brightness(0.85) contrast(1.1);
+        transition: transform 0.4s ease, filter 0.3s ease;
+      }
+      .valores-img:hover img {
+        transform: scale(1.03);
+        filter: brightness(0.9) contrast(1.15);
+      }
+
+      /* Tarjeta glass sobre la imagen */
+      .valor-overlay {
+        position: absolute;
+        left: 24px;
+        bottom: 24px;
+        max-width: 420px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(14px) saturate(1.4);
+        -webkit-backdrop-filter: blur(14px) saturate(1.4);
+        border-radius: 16px;
+        padding: 16px 20px;
+        color: #fff;
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+      }
+
+      /* Texto derecha */
+      .valores-info h2 {
+        font-family: "Georgia", serif;
+        font-size: clamp(2rem, 4vw, 2.8rem);
+        margin-bottom: 30px;
+        text-align: left;
+      }
+
+      .valores-grid {
+        display: grid;
+        gap: 22px;
+      }
+      .valores-grid article {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(12px) saturate(1.4);
+        -webkit-backdrop-filter: blur(12px) saturate(1.4);
+        border-radius: 18px;
+        padding: 20px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      .valores-grid article:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+      }
+      .valores-grid h3 {
+        margin: 0 0 8px;
+        font-size: 1.15rem;
+        color: #fff;
+        font-weight: 700;
+      }
+      .valores-grid p {
+        margin: 0;
+        color: #e8e8e8;
+        line-height: 1.6;
+      }
+
+      /* Responsivo */
+      @media (max-width: 900px) {
+        .valores-container {
+          grid-template-columns: 1fr;
+        }
+        .valores-img {
+          max-height: 400px;
+        }
+        .valores-info h2 {
+          text-align: center;
+        }
+      }
+
+      /* ========== ORGCHART (HORIZONTAL + GLASS) ========== */
+      .oc{
+        position: relative;
+        padding: clamp(60px, 8vw, 90px) 16px;
+        overflow: hidden;
+      }
+      .oc-bg{
+        position:absolute; inset:0; z-index:0;
+        background:
+          radial-gradient(80% 60% at 20% 0%, rgba(255,255,255,.12), transparent 60%),
+          radial-gradient(70% 50% at 80% 0%, rgba(136,224,217,.12), transparent 60%),
+          linear-gradient(180deg, #2a2340 0%, #141320 100%);
+      }
+      .oc-title{
+        position:relative; z-index:1;
+        text-align:center; margin:0 0 20px;
+        font-family:"Georgia",serif;
+        font-size: clamp(1.9rem, 4vw, 2.6rem);
+        color:#f3f4f8;
+      }
+
+      /* Niveles */
+      .oc-level{
+        position:relative; z-index:1;
+        display:flex; justify-content:center; gap:24px;
+        margin-bottom:18px;
+      }
+      .oc-level-2{ flex-wrap:wrap; }
+
+      /* Línea vertical del CEO hacia gerencias */
+      .oc-connector-down{
+        position:relative; z-index:1;
+        width:2px; height:26px; background:#ffffff40;
+        margin:6px auto 6px; border-radius:2px;
+      }
+
+      /* Línea horizontal del nivel */
+      .oc-with-line{
+        padding-top:26px;
+      }
+      .oc-with-line::before{
+        content:""; position:absolute; z-index:0;
+        top:12px; left:8%; right:8%; height:2px;
+        background:#ffffff30; border-radius:2px;
+      }
+
+      /* Tarjetas (glass) */
+      .oc-card{
+        position:relative;
+        width: clamp(260px, 26vw, 320px);
+        padding: 42px 14px 14px; /* espacio para avatar */
+        text-align:center;
+        border-radius:16px;
+        background: rgba(255,255,255,0.1);
+        border:1px solid rgba(255,255,255,0.35);
+        backdrop-filter: blur(10px) saturate(1.3);
+        -webkit-backdrop-filter: blur(10px) saturate(1.3);
+        box-shadow: 0 12px 30px rgba(0,0,0,.32);
+      }
+      .oc-card.oc-sm{ width: clamp(220px, 23vw, 280px); }
+
+      /* Avatar */
+      .oc-avatar{
+        position:absolute; top:-22px; left:50%; transform:translateX(-50%);
+        width:56px; height:56px; border-radius:50%;
+        object-fit:cover; background:#dfe6ff;
+        border:3px solid rgba(255,255,255,.9);
+        box-shadow:0 6px 16px rgba(0,0,0,.28);
+      }
+
+      /* Tipografía de tarjetas */
+      .oc-name{ margin:0; color:#ffffff; font-weight:800; font-size:1.02rem; }
+      .oc-role{ margin:6px 0 0; color:#e7e9f4; font-weight:600; }
+      .oc-meta{ margin:4px 0 0; color:#cdd3e6; font-size:.9rem; }
+
+      /* “Piernas” que bajan desde cada tarjeta a la línea del nivel */
+      .oc-level-2 .oc-card::before,
+      .oc-group .oc-card::before{
+        content:""; position:absolute; top:-14px; left:50%; transform:translateX(-50%);
+        width:2px; height:14px; background:#ffffff40; border-radius:2px;
+      }
+
+      /* Grupos de equipos (alineados por columna) */
+      .oc-groups{
+        position:relative; z-index:1;
+        display:grid; gap:16px;
+        max-width:1200px; margin:0 auto;
+      }
+      .oc-group{
+        position:relative; display:flex; flex-wrap:wrap;
+        justify-content:center; gap:18px; padding-top:26px;
+      }
+      .oc-group.oc-with-line::before{
+        content:""; position:absolute; top:12px; left:8%; right:8%; height:2px;
+        background:#ffffff30; border-radius:2px;
+      }
+
+      /* Acentos por área (opcional, brillo suave) */
+      .oc-card[data-area="tec"]{ box-shadow: 0 12px 30px rgba(77,138,255,.22); }
+      .oc-card[data-area="mkt"]{ box-shadow: 0 12px 30px rgba(255,157,230,.22); }
+      .oc-card[data-area="fin"]{ box-shadow: 0 12px 30px rgba(158,230,200,.22); }
+
+      /* Responsive */
+      @media (max-width: 900px){
+        .oc-card{ width:min(92vw, 360px); }
+        .oc-card.oc-sm{ width:min(92vw, 340px); }
+        .oc-with-line::before{ left:12%; right:12%; }
+      }
+
+      /* ======= PRODUCTOS (cards con hover) ======= */
+      #productos{
+        padding: clamp(70px,8vw,110px) 16px;
+      }
+
+      .products-wrap{ max-width:1100px; margin:0 auto; }
+      .products-grid{
+        display:grid; gap:22px;
+        grid-template-columns: repeat(12, minmax(0,1fr));
+      }
+      .product-card{ grid-column: span 12; }
+      @media (min-width: 860px){ .product-card{ grid-column: span 4; } }
+
+      .product{
+        position:relative; overflow:hidden;
+        border-radius: 22px;
+        background: var(--card);
+        border:1px solid var(--stroke);
+        box-shadow: var(--shadow);
+        aspect-ratio: 4/3;   /* forma de la tarjeta */
+      }
+
+      /* capa base: “imagen limpia” */
+      .product .still,
+      .product .hover {
+        position:absolute; inset:0; width:100%; height:100%;
+        display:grid; place-items:center;
+        transition: opacity .35s ease, transform .35s ease, filter .35s ease;
+      }
+      .product .still{
+        background: radial-gradient(60% 60% at 50% 45%, rgba(255,255,255,.10), transparent 60%);
+      }
+      .product .still img{
+        width:min(330px, 88%); height:auto; object-fit:contain;
+        filter: drop-shadow(0 18px 32px rgba(0,0,0,.35));
+      }
+
+      /* capa hover: foto + gradiente + badge de precio */
+      .product .hover{
+        opacity:0; transform: scale(1.02);
+      }
+      .product .hover img{
+        position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+        filter: brightness(.9) contrast(1.05);
+      }
+      .product .hover::after{
+        content:""; position:absolute; inset:0;
+        background: linear-gradient(180deg, rgba(0,0,0,.0) 30%, rgba(0,0,0,.55) 100%);
+      }
+
+      /* contenido inferior (nombre y badge) */
+      .prod-meta{
+        position:absolute; left:18px; right:18px; bottom:16px; z-index:1;
+        display:flex; align-items:flex-end; justify-content:space-between; gap:10px;
+      }
+      .prod-name{ font-weight:800; font-size:1.25rem; letter-spacing:.01em; }
+      .badge{
+        background:#fff; color:#111; font-weight:800;
+        padding:8px 12px; border-radius: 999px; box-shadow:0 8px 18px rgba(0,0,0,.25);
+      }
+
+      /* botón para servicio */
+      .prod-btn{
+        position:absolute; right:18px; bottom:16px; z-index:1;
+        background: linear-gradient(135deg, #55b7ff 0%, #7c8eff 40%, #9a66ff 100%);
+        color:#0f172a; border:none; border-radius:999px;
+        padding:10px 14px; font-weight:800; cursor:pointer; text-decoration:none;
+        box-shadow: 0 10px 22px rgba(0,0,0,.22);
+      }
+
+      /* interacción */
+      .product:hover .hover{ opacity:1; transform: scale(1); }
+      .product:hover .still{ opacity:0; transform: scale(.98); filter: blur(1px); }
+
+      /* texto bajo la tarjeta (colores tipo Oura) */
+      .prod-label{ margin-top:10px; text-align:center; color:var(--muted); font-weight:700; }
+
+      /* ====== CONTACTOS (GLASS) ====== */
+      .contacts{
+        position: relative;
+        padding: clamp(60px, 8vw, 100px) 16px;
+        color: var(--text);
+        background:
+          radial-gradient(80% 60% at 20% -10%, rgba(255,255,255,.12), transparent 60%),
+          radial-gradient(70% 50% at 80% -10%, rgba(136,224,217,.10), transparent 60%),
+          linear-gradient(180deg, #2a2340 0%, #141320 100%);
+      }
+      .contacts-title{
+        font-family:"Georgia",serif;
+        font-size: var(--h2, clamp(2rem,4vw,2.6rem));
+        text-align:center;
+        margin:0 0 26px;
+        color:#fff;
+      }
+      .contacts-grid{
+        max-width:1100px; margin:0 auto;
+        display:grid; gap:18px;
+        grid-template-columns: repeat(3, minmax(0,1fr));
+      }
+      .contact-card{
+        background: rgba(255,255,255,0.10);
+        border: 1px solid rgba(255,255,255,0.35);
+        backdrop-filter: blur(10px) saturate(1.3);
+        -webkit-backdrop-filter: blur(10px) saturate(1.3);
+        border-radius: 16px;
+        padding: 18px 16px;
+        box-shadow: 0 12px 28px rgba(0,0,0,.28);
+      }
+      .contact-card h3{ margin:0 0 4px; font-size:1.05rem; color:#fff; }
+      .contact-card .role{ margin:0 0 10px; color:#d8dcf0; font-weight:600; font-size:.95rem; }
+      .contact-card .link{
+        display:block; text-decoration:none; color:#e9ecff;
+        padding:6px 0; border-top:1px solid rgba(255,255,255,.15);
+        transition: opacity .2s ease;
+      }
+      .contact-card .link:first-of-type{ border-top:none; }
+      .contact-card .link:hover{ opacity:.85; }
+
+      /* Responsive */
+      @media (max-width: 980px){
+        .contacts-grid{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+      }
+      @media (max-width: 640px){
+        .contacts-grid{ grid-template-columns: 1fr; }
+      }
+
+  </style>
+</head>
+<body>
+
+
+  <!-- =========================
+       HEADER
+  ==========================-->
+  <header class="header">
+    <div class="nav">
+      <div class="brand">
+        <div class="badge">NS</div>
+      </div>
+      <nav>
+        
+        <button class="burger" id="burger" aria-label="Abrir menú"><span></span><span></span><span></span></button>
+        <div class="menu" id="menu">
+          <a href="#identidad">Identidad</a>
+          <a href="#organigrama">Organigrama</a>
+          <a href="#productos">Productos y servicios</a>
+          <a href="#contactos">Contactos</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO ” -->
+  <section id="inicio" class="hero-oura" aria-label="Presentación">
+    <div class="hero-wrap">
+      <div class="hero-copy">
+        <h1 class="hero-title">MINDWAVE <br> <br> SIENTE, ENTIENDE, CONECTA<br></h1>
+        <p class="hero-sub"><br>
+          Wearables con propósito: entenderte mejor cada día.
+        </p>
+        <a class="btn-cta" href="#productos">Empieza a explorar</a>
+      </div>
+
+      <figure class="hero-media">
+        <!-- reemplaza por tu imagen real -->
+        <img src="img/Diademas.png" alt="Diadema Neurosense" class="hero-product"/>
+      </figure>
+    </div>
+  </section>
+  <!-- =========================
+       IDENTIDAD
+  ==========================-->
+  <section id="identidad" class="section">
+    <div class="container">
+      <h2 class="title">Identidad de la empresa</h2>
+
+      <!-- Nombre / Logo / Eslogan -->
+      <div class="card">
+        <div class="logo-wrap">
+          <div class="logo"> <img src="img/logo.png"/></div>
+          <div>
+            <span class="chip">MINWAVE S.A DE C.V</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Propósito / Misión / Visión -->
+      <div class="grid three" style="margin-top:18px;">
+        <article class="card">
+          <h3 style="margin-top:0;">Propósito</h3>
+          <p>Desarrollar tecnología neurosensorial accesible que ayude a las personas a comprender y optimizar su bienestar mental mediante el análisis y la traducción de señales cerebrales en información útil para la vida cotidiana.</p>
+        </article>
+        <article class="card">
+          <h3 style="margin-top:0;">Misión</h3>
+          <p>Desarrollar tecnología <em>wearable</em> neurosensorial de vanguardia que potencie el bienestar mental y el rendimiento cognitivo, ofreciendo herramientas accesibles y basadas en datos para comprender y optimizar la actividad cerebral.</p>
+        </article>
+        <article class="card">
+          <h3 style="margin-top:0;">Visión</h3>
+          <p>Ser la compañía líder global en soluciones de neurotecnología personal, reconocida por democratizar el acceso al autocuidado cerebral e integrar de forma ética e innovadora la inteligencia biológica y la artificial para expandir el potencial humano.</p>
+        </article>
+      </div>
+      <div><br></div>
+
+      <!-- Valores -->
+      <section id="valores" class="valores-oura">
+        <div class="valores-container">
+
+          <figure class="valores-img">
+            <img src="img/valores.jpg" alt="Persona relajada con dispositivo Neurosense">
+            <article class="valor-overlay">
+              <h3>Innovación con propósito</h3>
+              <p>Cada avance tecnológico busca mejorar la vida de los usuarios y contribuir al bienestar humano.</p>
+            </article>
+          </figure>
+
+          <div class="valores-info">
+            <h2>Nuestros valores</h2>
+            <div class="valores-grid">
+              <article>
+                <h3>Empatía y enfoque humano</h3>
+                <p>Escuchamos y comprendemos las necesidades de las personas para crear soluciones accesibles y efectivas.</p>
+              </article>
+              <article>
+                <h3>Integridad científica y ética</h3>
+                <p>Garantizamos privacidad, seguridad y transparencia en el manejo de datos neuronales.</p>
+              </article>
+              <article>
+                <h3>Colaboración y mentalidad abierta</h3>
+                <p>Promovemos el trabajo interdisciplinario entre neurociencia, ingeniería y diseño para lograr resultados innovadores.</p>
+              </article>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============ ORGANIGRAMA (HORIZONTAL + GLASS) ============ -->
+      <div><br></div>
+      <section id="organigrama" class="oc">
+        <div class="oc-bg"></div>
+        <h2 class="oc-title">Organigrama de la empresa</h2>
+
+        <!-- CEO -->
+        <div class="oc-level oc-level-1">
+          <div class="oc-card">
+            <img class="oc-avatar" src="img/ceo.jpg" alt="María Fernanda" />
+            <h3 class="oc-name">María Fernanda Sánchez Pérez</h3>
+            <p class="oc-role">Directora General</p>
+            <p class="oc-meta">CDMX, México</p>
+          </div>
+        </div>
+
+        <!-- Línea vertical hacia gerencias -->
+        <div class="oc-connector-down"></div>
+
+        <!-- Gerencias (fila horizontal) -->
+        <div class="oc-level oc-level-2 oc-with-line">
+          <div class="oc-card" data-area="tec">
+            <img class="oc-avatar" src="img/tec.jpg" alt="Julio César" />
+            <h3 class="oc-name">Julio César Molina Sánchez</h3>
+            <p class="oc-role">Gerente de Tecnología</p>
+            <p class="oc-meta">CDMX, México</p>
+          </div>
+          <div class="oc-card" data-area="mkt">
+            <img class="oc-avatar" src="img/mkt.jpg" alt="María Michell" />
+            <h3 class="oc-name">María Michell Hernández Domínguez</h3>
+            <p class="oc-role">Gerente de Marketing</p>
+            <p class="oc-meta">CDMX, México</p>
+          </div>
+          <div class="oc-card" data-area="fin">
+            <img class="oc-avatar" src="img/fin.jpg" alt="Anaid Velázquez" />
+            <h3 class="oc-name">Anaid Velázquez Ávila</h3>
+            <p class="oc-role">Gerente de Finanzas</p>
+            <p class="oc-meta">CDMX, México</p>
+          </div>
+        </div>
+
+        <!-- Equipos (3 grupos debajo, alineados a cada gerencia) -->
+        <div class="oc-groups">
+          <!-- Tecnología -->
+          <div class="oc-group oc-with-line">
+            <div class="oc-card oc-sm">
+              <img class="oc-avatar" src="img/id.jpg" alt="I+D" />
+              <h4 class="oc-name">Julio César Molina Sánchez</h4>
+              <p class="oc-role">Coordinador de I+D</p>
+              <p class="oc-meta">CDMX, México</p>
+            </div>
+            <div class="oc-card oc-sm">
+              <img class="oc-avatar" src="img/dev.jpg" alt="Alan Yael" />
+              <h4 class="oc-name">Alan Yael Gómez Arellano</h4>
+              <p class="oc-role">Ingeniero en Software</p>
+              <p class="oc-meta">CDMX, México</p>
+            </div>
+            <div class="oc-card oc-sm">
+              <img class="oc-avatar" src="img/data.jpg" alt="Alan Yael" />
+              <h4 class="oc-name">Alan Yael Gómez Arellano</h4>
+              <p class="oc-role">Analista de Datos Cerebrales</p>
+              <p class="oc-meta">CDMX, México</p>
+            </div>
+          </div>
+
+          <!-- Marketing -->
+          <div class="oc-group oc-with-line">
+            <div class="oc-card oc-sm">
+              <img class="oc-avatar" src="img/cm.jpg" alt="María Michell" />
+              <h4 class="oc-name">María Michell H. Domínguez</h4>
+              <p class="oc-role">Coord. Comunicación y Mkt Digital</p>
+              <p class="oc-meta">CDMX, México</p>
+            </div>
+            <div class="oc-card oc-sm">
+              <img class="oc-avatar" src="img/ui.jpg" alt="Christian" />
+              <h4 class="oc-name">Christian Fernández Avendaño</h4>
+              <p class="oc-role">Diseñador de Producto</p>
+              <p class="oc-meta">CDMX, México</p>
+            </div>
+            <div class="oc-card oc-sm">
+              <img class="oc-avatar" src="img/ux.jpg" alt="Christian" />
+              <h4 class="oc-name">Christian Fernández Avendaño</h4>
+              <p class="oc-role">Especialista en Experiencia de Usuario</p>
+              <p class="oc-meta">CDMX, México</p>
+            </div>
+          </div>
+
+          <!-- Finanzas -->
+          <div class="oc-group oc-with-line">
+            <div class="oc-card oc-sm">
+              <img class="oc-avatar" src="img/analyst.jpg" alt="Anaid" />
+              <h4 class="oc-name">Anaid Velázquez Ávila</h4>
+              <p class="oc-role">Analista Financiero</p>
+              <p class="oc-meta">CDMX, México</p>
+            </div>
+            <div class="oc-card oc-sm">
+              <img class="oc-avatar" src="img/aux.jpg" alt="Anaid" />
+              <h4 class="oc-name">Anaid Velázquez Ávila</h4>
+              <p class="oc-role">Auxiliar Financiero / Contabilidad</p>
+              <p class="oc-meta">CDMX, México</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================
+          PRODUCTOS
+      ==========================-->
+      <section id="productos">
+        <div class="products-wrap">
+         <h2 class="title">Productos y servicios</h2>
+          <p class="lead">Explora nuestra diadema y anillo de monitoreo, y solicita revisión técnica si lo necesitas.</p>
+
+          <div class="products-grid">
+
+            <!-- Diadema -->
+            <article class="product-card">
+              <div class="product" aria-label="Diadema Neurosense">
+                <!-- Imagen limpia (PNG recortado) -->
+                <div class="still">
+                  <img src="img/diadema negra.png" alt="Diadema Neurosense en fondo neutro">
+                </div>
+                <!-- Al pasar el mouse: foto ambiente + precio -->
+                <div class="hover">
+                  <img src="img/ejemplo1.png" alt="Diadema Neurosense en uso">
+                  <div class="prod-meta">
+                    <div class="prod-name">Diadema</div>
+                    <span class="badge">$1,500 MXN</span>
+                  </div>
+                </div>
+              </div>
+              <div class="prod-label">Midnight</div>
+            </article>
+
+            <!-- 2 -->
+            <article class="product-card">
+              <div class="product" aria-label="Anillo Neurosense">
+                <div class="still">
+                  <img src="img/diadema azul.png" alt="Anillo Neurosense en fondo neutro">
+                </div>
+                <div class="hover">
+                  <img src="img/ejemplo2.png" alt="Anillo Neurosense sobre mano">
+                  <div class="prod-meta">
+                    <div class="prod-name">Diadema</div>
+                    <span class="badge">$1,500 MXN</span>
+                  </div>
+                </div>
+              </div>
+              <div class="prod-label">Cloud</div>
+            </article>
+
+            <!-- 3 -->
+            <article class="product-card">
+              <div class="product" aria-label="Servicio de revisión de fallos">
+                <div class="still">
+                  <img src="img/diadema bluey.png" alt="Icono servicio técnico">
+                </div>
+                <div class="hover">
+                  <img src="img/ejemplo3.png" alt="Técnico revisando dispositivo">
+                  <div class="prod-meta">
+                    <div class="prod-name">Personaliza tu diadema</div>
+                    <span class="badge">$1,500 MXN</span>
+                  </div>
+                </div>
+              </div>
+              <div class="prod-label">Personalizable</div>
+            </article>
+
+          </div>
+        </div>
+      </section>
+
+
+
+  <!-- =========================
+       CONCLUSIÓN + CONTACTOS
+  ==========================-->
+
+  <section id="contactos" class="section">
+    <div class="container center">
+      <h2 class="title">Contactos oficiales</h2>
+        <div class="contacts-grid">
+          <article class="contact-card">
+            <h3>María Fernanda Sánchez Pérez</h3>
+            <p class="role">Directora General</p>
+            <a class="link" href="mailto:maria.sanchez@neurosense.com"> maria.sanchez@neurosense.com</a>
+            <a class="link" href="tel:+525510234498"> +52 55 1023 4498</a>
+          </article>
+
+          <article class="contact-card">
+            <h3>Julio César Molina Sánchez</h3>
+            <p class="role">Gerente de Tecnología</p>
+            <a class="link" href="mailto:julio.molina@neurosense.com"> julio.molina@neurosense.com</a>
+            <a class="link" href="tel:+525578542231"> +52 55 7854 2231</a>
+          </article>
+
+          <article class="contact-card">
+            <h3>María Michell Hernández Domínguez</h3>
+            <p class="role">Gerente de Marketing</p>
+            <a class="link" href="mailto:maria.michell@neurosense.com"> maria.michell@neurosense.com</a>
+            <a class="link" href="tel:+525593421187"> +52 55 9342 1187</a>
+          </article>
+
+          <article class="contact-card">
+            <h3>Anaid Velázquez Ávila</h3>
+            <p class="role">Gerente de Finanzas</p>
+            <a class="link" href="mailto:anaid.velazquez@neurosense.com"> anaid.velazquez@neurosense.com</a>
+            <a class="link" href="tel:+525599106705"> +52 55 9910 6705</a>
+          </article>
+
+          <article class="contact-card">
+            <h3>Alan Yael Gómez Arellano</h3>
+            <p class="role">Ingeniero en Software</p>
+            <a class="link" href="mailto:alan.gomez@neurosense.com"> alan.gomez@neurosense.com</a>
+            <a class="link" href="tel:+525543829985"> +52 55 4382 9985</a>
+          </article>
+
+          <article class="contact-card">
+            <h3>Christian Fernández Avendaño</h3>
+            <p class="role">Diseñador de Producto</p>
+            <a class="link" href="mailto:christian.fernandez@neurosense.com"> christian.fernandez@neurosense.com</a>
+            <a class="link" href="tel:+525577316624"> +52 55 7731 6624</a>
+          </article>
+        </div>
+      </section>
+
+      <p class="lead" style="margin-top:14px; color:var(--muted)">&copy; <span id="year"></span> Mindwave S.A. de C.V. — Proyecto Neurosense.</p>
+    </div>
+      </div>
+      
+  </section>
+
+  <script>
+    // Año dinámico
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Menú móvil
+    const burger = document.getElementById('burger');
+    const menu = document.getElementById('menu');
+    burger.addEventListener('click', ()=> menu.classList.toggle('open'));
+    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', ()=> menu.classList.remove('open')));
+
+    // Theme toggle (Dark / Light)
+    const btn = document.getElementById('theme');
+    btn.addEventListener('click', () => {
+      const html = document.documentElement;
+      html.setAttribute('data-theme', html.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>
