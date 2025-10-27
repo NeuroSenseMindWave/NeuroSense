@@ -585,7 +585,385 @@
         .oc-with-line::before{ left:12%; right:12%; }
       }
 
-      /* ======= PRODUCTOS (cards con hover) ======= */
+      /* === Distribución en 3 columnas alineadas a cada gerente === */
+      .oc-columns{
+        position:relative; z-index:1;
+        max-width:1200px; margin:0 auto;
+        display:grid; grid-template-columns: repeat(3, 1fr);
+        gap:22px;
+        padding-top:26px; /* para la línea superior */
+      }
+      .oc-columns::before{           /* línea horizontal encima de las columnas */
+        content:""; position:absolute; top:12px; left:6%; right:6%;
+        height:2px; background:#ffffff30; border-radius:2px;
+      }
+      .oc-col{
+        position:relative;
+        display:flex; flex-direction:column; align-items:center; gap:16px;
+      }
+
+      /* Conector vertical entre gerente y sus hijos */
+      .oc-spine{
+        width:2px; height:20px; background:#ffffff40; border-radius:2px;
+      }
+
+      /* Hijos organizados */
+      .oc-children{ width:100%; display:grid; gap:16px; }
+      .oc-children.two{ grid-template-columns: repeat(2, 1fr); }
+
+      /* Si queda un elemento “impar”, este ocupa la fila completa y queda centrado */
+      .oc-children.two > .oc-card:nth-last-child(1):nth-child(odd){
+        grid-column: 1 / -1; justify-self:center; width: clamp(240px, 70%, 380px);
+      }
+
+      /* Responsivo */
+      @media (max-width: 1000px){
+        .oc-columns{ grid-template-columns: 1fr; }
+        .oc-columns::before{ left:12%; right:12%; }
+        .oc-children.two{ grid-template-columns: 1fr; }
+        .oc-children.two > .oc-card:nth-last-child(1):nth-child(odd){
+          width: min(92vw, 360px);
+        }
+      } 
+      
+      /* === Ajustes de tamaño y alineación === */
+
+      /* Cards más compactas */
+      .oc-card{
+        width: clamp(220px, 22vw, 280px);
+        padding: 36px 12px 12px;         /* menos alto */
+        border-radius: 14px;
+      }
+      .oc-card.oc-sm{
+        width: clamp(200px, 20vw, 250px);
+        padding: 34px 12px 12px;
+      }
+
+      /* Avatar más chico */
+      .oc-avatar{
+        width: 48px; height: 48px; top: -18px;
+        border-width: 2px;
+      }
+
+      /* Tipografías un poco más pequeñas para que quepan mejor */
+      .oc-name{ font-size: .98rem; }
+      .oc-role{ font-size: .95rem; }
+      .oc-meta{ font-size: .88rem; }
+
+      /* Menos separación vertical general */
+      .oc-level{ gap: 18px; margin-bottom: 12px; }
+      .oc-connector-down{ height: 22px; margin: 4px auto; }
+
+      /* Grid de columnas: centrado y con stems (piernas) perfectos */
+      .oc-columns{
+        max-width: 1100px;            /* un poco más estrecho */
+        gap: 20px;
+        padding-top: 24px;            /* coincide con la línea superior */
+      }
+      .oc-columns::before{
+        top: 10px; left: 5.5%; right: 5.5%;
+      }
+
+      /* Pierna vertical desde la línea superior hacia cada gerente */
+      .oc-columns > .oc-col::before{
+        content:""; position:absolute; top: 10px; left:50%; transform:translateX(-50%);
+        width:2px; height:14px; background:#ffffff40; border-radius:2px;
+      }
+
+      /* Columna: apilar y centrar */
+      .oc-col{ gap: 12px; align-items:center; }
+
+      /* Conector entre gerente y sus hijos */
+      .oc-spine{ height: 16px; }
+
+      /* Hijos: dos columnas cuando haya espacio, centrados */
+      .oc-children{
+        width: 100%; display: grid; gap: 12px;
+        justify-items: center;       /* centra cada hijx */
+      }
+      .oc-children.two{
+        grid-template-columns: repeat(2, minmax(200px, 1fr));
+        column-gap: 14px; row-gap: 12px;
+      }
+
+      /* Si queda uno impar, baja centrado y angosto */
+      .oc-children.two > .oc-card:nth-last-child(1):nth-child(odd){
+        grid-column: 1 / -1;
+        width: clamp(210px, 60%, 320px);
+        justify-self: center;
+      }
+
+      /* Línea horizontal de cada grupo (más fina y alineada) */
+      .oc-columns::before,
+      .oc-with-line::before,
+      .oc-group.oc-with-line::before{
+        height: 1.5px; background: #ffffff28;
+      }
+
+      /* Responsive: más compacto todavía */
+      @media (max-width: 1000px){
+        .oc-card{ width:min(92vw, 320px); }
+        .oc-card.oc-sm{ width:min(92vw, 300px); }
+        .oc-columns{ grid-template-columns: 1fr; max-width: 640px; }
+        .oc-columns::before{ left:12%; right:12%; }
+        .oc-children.two{ grid-template-columns: 1fr; }
+      }
+
+      /* === Variante: columna de hijos en una sola columna (apilados) === */
+      .oc-children.onecol{
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr;     /* una sola columna */
+        row-gap: 12px;
+        justify-items: center;          /* centra cada tarjeta */
+      }
+
+      /* ancho cómodo de las tarjetas apiladas */
+      .oc-children.onecol .oc-card{
+        width: clamp(220px, 22vw, 280px);
+      }
+
+      /* conector vertical entre tarjetas (excepto la primera) */
+      .oc-children.onecol .oc-card:not(:first-child)::before{
+        content:"";
+        position:absolute;
+        top:-12px; left:50%; transform:translateX(-50%);
+        width:2px; height:12px;
+        background:#ffffff40; border-radius:2px;
+      }
+      /*tamaños*/
+      .oc{ padding: clamp(24px, 4vw, 48px) 8px; }
+      .oc-title{ margin-bottom: 12px; font-size: clamp(1.6rem, 3.2vw, 2.2rem); }
+
+      /* columnas más angostas y con menos separación */
+      .oc-columns{
+        max-width: 960px;    /* antes 1100–1200px */
+        gap: 14px;
+        padding-top: 18px;
+      }
+      .oc-columns::before{ top: 8px; }
+
+      /* “patita” desde la línea a cada gerente + espina */
+      .oc-columns > .oc-col::before{ top: 8px; height: 12px; }
+      .oc-col{ gap: 10px; }
+      .oc-spine{ height: 12px; }
+
+      /* tarjetas más pequeñas */
+      .oc-card{
+        width: clamp(200px, 19vw, 240px);
+        padding: 30px 10px 10px;
+        border-radius: 12px;
+      }
+      .oc-card.oc-sm{
+        width: clamp(190px, 18vw, 220px);
+        padding: 28px 10px 10px;
+      }
+
+      /* avatar más chico */
+      .oc-avatar{ width: 42px; height: 42px; top: -16px; border-width: 2px; }
+
+      /* tipografías más compactas */
+      .oc-name{ font-size: .92rem; }
+      .oc-role{ font-size: .90rem; }
+      .oc-meta{ font-size: .84rem; }
+
+      /* hijos en 2 columnas más angostas + menos gap */
+      .oc-children{ gap: 10px; }
+      .oc-children.two{
+        grid-template-columns: repeat(2, minmax(180px, 1fr));
+        column-gap: 10px; row-gap: 10px;
+      }
+      /* impar centrado (columna de Tecnología) */
+      .oc-children.two > .oc-card:nth-last-child(1):nth-child(odd){
+        width: clamp(200px, 56%, 300px);
+      }
+
+      /* columna central apilada (ya la tienes como .onecol) */
+      .oc-children.onecol .oc-card{ width: clamp(200px, 19vw, 240px); }
+
+      /* más compacto en pantallas medias */
+      @media (max-width: 1200px){
+        .oc-columns{ max-width: 800px; }
+        .oc-card{ width: clamp(190px, 18vw, 230px); }
+        .oc-card.oc-sm{ width: clamp(180px, 17vw, 210px); }
+        .oc-children.two{
+          grid-template-columns: repeat(2, minmax(170px, 1fr));
+        }
+      }
+
+      /* ===== FIT-TO-CONTAINER (versión más compacta) ===== */
+      .oc {
+        padding: clamp(20px, 3vw, 40px) 6px;
+      }
+      .oc-title {
+        margin-bottom: 10px;
+        font-size: clamp(1.5rem, 3vw, 2rem);
+      }
+
+      /* --- Grid general más angosto --- */
+      .oc-columns {
+        max-width: 800px;   /* antes 960 */
+        gap: 12px;
+        padding-top: 16px;
+      }
+      .oc-columns::before { top: 6px; }
+
+      /* --- Cards más pequeñas --- */
+      .oc-card {
+        width: clamp(180px, 18vw, 220px);
+        padding: 28px 10px 10px;
+        border-radius: 12px;
+      }
+      .oc-card.oc-sm {
+        width: clamp(170px, 17vw, 210px);
+        padding: 26px 10px 10px;
+      }
+
+      /* Avatar mini */
+      .oc-avatar {
+        width: 38px;
+        height: 38px;
+        top: -14px;
+        border-width: 2px;
+      }
+
+      /* Tipografías reducidas */
+      .oc-name { font-size: .88rem; }
+      .oc-role { font-size: .86rem; }
+      .oc-meta { font-size: .80rem; }
+
+      /* Gaps verticales */
+      .oc-col { gap: 8px; }
+      .oc-spine { height: 10px; }
+      .oc-children { gap: 8px; }
+      .oc-children.two {
+        grid-template-columns: repeat(2, minmax(160px, 1fr));
+        column-gap: 10px;
+        row-gap: 8px;
+      }
+
+      /* Impar centrado */
+      .oc-children.two > .oc-card:nth-last-child(1):nth-child(odd) {
+        width: clamp(180px, 55%, 260px);
+      }
+
+      /* Columna apilada (Marketing) */
+      .oc-children.onecol .oc-card {
+        width: clamp(180px, 18vw, 220px);
+      }
+
+      /* Líneas más finas */
+      .oc-columns::before,
+      .oc-with-line::before,
+      .oc-group.oc-with-line::before {
+        height: 1px;
+        background: #ffffff25;
+      }
+
+      /* Responsive */
+      @media (max-width: 1000px) {
+        .oc-columns { max-width: 760px; }
+        .oc-card { width: min(90vw, 280px); }
+      }
+
+      /* ====== ORGCHART – PACK FINAL COMPACTO Y ALINEADO ====== */
+
+      /* Contenedor + título más compactos */
+      .oc{ padding: clamp(18px,3vw,36px) 6px; }
+      .oc-title{ margin-bottom: 10px; font-size: clamp(1.5rem,3vw,2rem); }
+
+      /* Grid de 3 columnas perfectamente centrado y angosto */
+      .oc-columns{
+        max-width: 840px;               /* <- caber completo */
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(3,1fr);
+        gap: 12px;
+        padding-top: 14px;
+        position: relative;
+        z-index: 1;
+      }
+      .oc-columns::before{              /* línea horizontal superior */
+        content:""; position:absolute; top:6px; left:6%; right:6%;
+        height:1px; background:#ffffff25; border-radius:2px;
+      }
+
+      /* Patita desde la línea superior a cada gerente */
+      .oc-columns > .oc-col{ position:relative; display:flex; flex-direction:column; align-items:center; gap:8px; }
+      .oc-columns > .oc-col::before{
+        content:""; position:absolute; top:6px; left:50%; transform:translateX(-50%);
+        width:2px; height:10px; background:#ffffff40; border-radius:2px;
+      }
+      .oc-spine{ width:2px; height:10px; background:#ffffff40; border-radius:2px; }
+
+      /* Tarjetas más pequeñas (no se salen) */
+      .oc-card{
+        width: clamp(176px, 18vw, 210px);
+        padding: 26px 10px 10px;
+        border-radius: 12px;
+      }
+      .oc-card.oc-sm{
+        width: clamp(170px, 17vw, 200px);
+        padding: 24px 10px 10px;
+      }
+
+      /* Avatares + tipografías compactas */
+      .oc-avatar{ width:38px; height:38px; top:-14px; border-width:2px; }
+      .oc-name{ font-size:.88rem; }
+      .oc-role{ font-size:.86rem; }
+      .oc-meta{ font-size:.8rem; }
+
+      /* Hijos: sin desbordes ni solapes */
+      .oc-children{
+        width:100%;
+        display:grid;
+        gap:8px;
+        justify-items:center;           /* centra cada tarjeta */
+      }
+      .oc-children.two{
+        grid-template-columns: 1fr 1fr; /* 2 columnas exactas */
+        column-gap:10px; row-gap:8px;
+      }
+      .oc-children.two .oc-card{
+        width:100%;                     /* ocupa su celda sin salirse */
+        max-width:210px;
+      }
+
+      /* Último impar centrado (caso Tecnología: 2+1) */
+      .oc-children.two > .oc-card:nth-last-child(1):nth-child(odd){
+        grid-column: 1 / -1;
+        max-width: 240px;
+      }
+
+      /* Columna central apilada (Marketing: 4 en vertical) */
+      .oc-children.onecol{
+        grid-template-columns: 1fr;     /* una sola columna */
+        row-gap: 8px;
+      }
+      .oc-children.onecol .oc-card{
+        width:100%;
+        max-width:210px;
+      }
+      /* conector entre tarjetas (excepto la primera) */
+      .oc-children.onecol .oc-card:not(:first-child)::before{
+        content:""; position:absolute; top:-10px; left:50%; transform:translateX(-50%);
+        width:2px; height:10px; background:#ffffff40; border-radius:2px;
+      }
+
+      /* Líneas finas coherentes */
+      .oc-columns::before,
+      .oc-with-line::before,
+      .oc-group.oc-with-line::before{ height:1px; background:#ffffff25; }
+
+      /* Un poco más compacto en pantallas medias */
+      @media (max-width: 1000px){
+        .oc-columns{ max-width: 720px; }
+        .oc-card{ width:min(90vw, 260px); }
+        .oc-card.oc-sm{ width:min(90vw, 240px); }
+      }
+
+
+/* ======= PRODUCTOS (cards con hover) ======= */
       #productos{
         padding: clamp(70px,8vw,110px) 16px;
       }
@@ -662,6 +1040,7 @@
       /* texto bajo la tarjeta (colores tipo Oura) */
       .prod-label{ margin-top:10px; text-align:center; color:var(--muted); font-weight:700; }
 
+      
       /* ====== CONTACTOS (GLASS) ====== */
       .contacts{
         position: relative;
@@ -830,10 +1209,9 @@
         <!-- CEO -->
         <div class="oc-level oc-level-1">
           <div class="oc-card">
-            <img class="oc-avatar" src="img/ceo.jpg" alt="María Fernanda" />
+            <img class="oc-avatar" src="img/mujer.png" alt="María Fernanda" />
             <h3 class="oc-name">María Fernanda Sánchez Pérez</h3>
             <p class="oc-role">Directora General</p>
-            <p class="oc-meta">CDMX, México</p>
           </div>
         </div>
 
@@ -841,89 +1219,102 @@
         <div class="oc-connector-down"></div>
 
         <!-- Gerencias (fila horizontal) -->
-        <div class="oc-level oc-level-2 oc-with-line">
-          <div class="oc-card" data-area="tec">
-            <img class="oc-avatar" src="img/tec.jpg" alt="Julio César" />
-            <h3 class="oc-name">Julio César Molina Sánchez</h3>
-            <p class="oc-role">Gerente de Tecnología</p>
-            <p class="oc-meta">CDMX, México</p>
+        <!-- === NUEVO BLOQUE: 3 columnas alineadas === -->
+        <div class="oc-columns">
+          <!-- COLUMNA 1 · TECNOLOGÍA (3 personas) -->
+          <div class="oc-col">
+            <div class="oc-card manager" data-area="tec">
+              <img class="oc-avatar" src="img\hombre.png" alt="Julio César" />
+              <h3 class="oc-name">Julio César Molina Sánchez</h3>
+              <p class="oc-role">Gerente de Tecnología</p>
+            </div>
+
+            <span class="oc-spine"></span>
+
+            <!-- dos arriba + uno centrado abajo -->
+            <div class="oc-children two">
+              <div class="oc-card oc-sm">
+                <img class="oc-avatar" src="img\mujer.png" alt="María Michell" />
+                <h4 class="oc-name">María Michell Hernández Domínguez</h4>
+                <p class="oc-role">Coordinador de Investigación y Desarrollo</p>
+              </div>
+              <div class="oc-card oc-sm">
+                <img class="oc-avatar" src="img\hombre.png" alt="Alan Yael" />
+                <h4 class="oc-name">Alan Yael Gómez Arellano</h4>
+                <p class="oc-role">Ingeniero en Software</p>
+              </div>
+              <div class="oc-card oc-sm">
+                <img class="oc-avatar" src="img\hombre.png" alt="Christian" />
+                <h4 class="oc-name">Christian Fernández Avendaño</h4>
+                <p class="oc-role">Diseñador de Prototipo Físico</p>
+              </div>
+            </div>
           </div>
-          <div class="oc-card" data-area="mkt">
-            <img class="oc-avatar" src="img/mkt.jpg" alt="María Michell" />
-            <h3 class="oc-name">María Michell Hernández Domínguez</h3>
-            <p class="oc-role">Gerente de Marketing</p>
-            <p class="oc-meta">CDMX, México</p>
+
+          <!-- COLUMNA 2 · MARKETING (4 personas) -->
+          <div class="oc-col">
+            <div class="oc-card manager" data-area="mkt">
+              <img class="oc-avatar" src="img\mujer.png" alt="María Michell" />
+              <h3 class="oc-name">María Michell Hernández Domínguez</h3>
+              <p class="oc-role">Gerente de Marketing</p>
+            </div>
+
+            <span class="oc-spine"></span>
+
+            <!-- IMPORTANTE: wrapper de hijos en UNA COLUMNA -->
+            <div class="oc-children onecol">
+              <div class="oc-card oc-sm">
+                <img class="oc-avatar" src="img\hombre.png" alt="Alan Yael" />
+                <h4 class="oc-name">Alan Yael Gómez Arellano</h4>
+                <p class="oc-role">Ingeniero en Software</p>
+              </div>
+
+              <div class="oc-card oc-sm">
+                <img class="oc-avatar" src="img\hombre.png" alt="Alan Yael" />
+                <h4 class="oc-name">Alan Yael Gómez Arellano</h4>
+                <p class="oc-role">Coordinador de Comunicación y Marketing Digital</p>
+              </div>
+
+              <div class="oc-card oc-sm">
+                <img class="oc-avatar" src="img\hombre.png" alt="Christian" />
+                <h4 class="oc-name">Christian Fernández Avendaño</h4>
+                <p class="oc-role">Diseñador de producto</p>
+              </div>
+
+              <div class="oc-card oc-sm">
+                <img class="oc-avatar" src="img\mujer.png" alt="Anaid" />
+                <h4 class="oc-name">Anaid Velázquez Ávila</h4>
+                <p class="oc-role">Especialista en Experiencia de Usuario</p>
+              </div>
+            </div>
           </div>
-          <div class="oc-card" data-area="fin">
-            <img class="oc-avatar" src="img/fin.jpg" alt="Anaid Velázquez" />
-            <h3 class="oc-name">Anaid Velázquez Ávila</h3>
-            <p class="oc-role">Gerente de Finanzas</p>
-            <p class="oc-meta">CDMX, México</p>
+
+
+          <!-- COLUMNA 3 · FINANZAS (2 personas) -->
+          <div class="oc-col">
+            <div class="oc-card manager" data-area="fin">
+              <img class="oc-avatar" src="img\mujer.png" alt="Anaid" />
+              <h3 class="oc-name">Anaid Velázquez Ávila</h3>
+              <p class="oc-role">Gerente de Finanzas</p>
+            </div>
+
+            <span class="oc-spine"></span>
+
+            <div class="oc-children two">
+              <div class="oc-card oc-sm">
+                <img class="oc-avatar" src="img\mujer.png" alt="María Fernanda" />
+                <h4 class="oc-name">María Fernanda Sánchez Pérez</h4>
+                <p class="oc-role">Auxiliar Financiero y Contable</p>
+              </div>
+              <div class="oc-card oc-sm">
+                <img class="oc-avatar" src="img\hombre.png" alt="Julio César" />
+                <h4 class="oc-name">Julio César Molina Sánchez</h4>
+                <p class="oc-role">Analista Financiero</p>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- Equipos (3 grupos debajo, alineados a cada gerencia) -->
-        <div class="oc-groups">
-          <!-- Tecnología -->
-          <div class="oc-group oc-with-line">
-            <div class="oc-card oc-sm">
-              <img class="oc-avatar" src="img/id.jpg" alt="I+D" />
-              <h4 class="oc-name">Julio César Molina Sánchez</h4>
-              <p class="oc-role">Coordinador de I+D</p>
-              <p class="oc-meta">CDMX, México</p>
-            </div>
-            <div class="oc-card oc-sm">
-              <img class="oc-avatar" src="img/dev.jpg" alt="Alan Yael" />
-              <h4 class="oc-name">Alan Yael Gómez Arellano</h4>
-              <p class="oc-role">Ingeniero en Software</p>
-              <p class="oc-meta">CDMX, México</p>
-            </div>
-            <div class="oc-card oc-sm">
-              <img class="oc-avatar" src="img/data.jpg" alt="Alan Yael" />
-              <h4 class="oc-name">Alan Yael Gómez Arellano</h4>
-              <p class="oc-role">Analista de Datos Cerebrales</p>
-              <p class="oc-meta">CDMX, México</p>
-            </div>
-          </div>
-
-          <!-- Marketing -->
-          <div class="oc-group oc-with-line">
-            <div class="oc-card oc-sm">
-              <img class="oc-avatar" src="img/cm.jpg" alt="María Michell" />
-              <h4 class="oc-name">María Michell H. Domínguez</h4>
-              <p class="oc-role">Coord. Comunicación y Mkt Digital</p>
-              <p class="oc-meta">CDMX, México</p>
-            </div>
-            <div class="oc-card oc-sm">
-              <img class="oc-avatar" src="img/ui.jpg" alt="Christian" />
-              <h4 class="oc-name">Christian Fernández Avendaño</h4>
-              <p class="oc-role">Diseñador de Producto</p>
-              <p class="oc-meta">CDMX, México</p>
-            </div>
-            <div class="oc-card oc-sm">
-              <img class="oc-avatar" src="img/ux.jpg" alt="Christian" />
-              <h4 class="oc-name">Christian Fernández Avendaño</h4>
-              <p class="oc-role">Especialista en Experiencia de Usuario</p>
-              <p class="oc-meta">CDMX, México</p>
-            </div>
-          </div>
-
-          <!-- Finanzas -->
-          <div class="oc-group oc-with-line">
-            <div class="oc-card oc-sm">
-              <img class="oc-avatar" src="img/analyst.jpg" alt="Anaid" />
-              <h4 class="oc-name">Anaid Velázquez Ávila</h4>
-              <p class="oc-role">Analista Financiero</p>
-              <p class="oc-meta">CDMX, México</p>
-            </div>
-            <div class="oc-card oc-sm">
-              <img class="oc-avatar" src="img/aux.jpg" alt="Anaid" />
-              <h4 class="oc-name">Anaid Velázquez Ávila</h4>
-              <p class="oc-role">Auxiliar Financiero / Contabilidad</p>
-              <p class="oc-meta">CDMX, México</p>
-            </div>
-          </div>
-        </div>
       </section>
 
       <!-- =========================
